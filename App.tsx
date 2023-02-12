@@ -8,7 +8,6 @@ import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
-import "@/rollbar";
 import ErrorBoundary from "@/ErrorBoundary";
 
 Notifications.setNotificationHandler({

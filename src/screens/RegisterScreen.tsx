@@ -54,7 +54,7 @@ export default function RergisterScreen({
       if (data.me.token != token) {
         updateToken({ variables: { token } });
       } else if (data.me.username) {
-        setId(data.me.id)
+        setId(data.me.id);
 
         navigation.reset({
           routes: [{ name: "Home" }],

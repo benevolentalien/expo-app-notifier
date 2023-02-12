@@ -1,6 +1,5 @@
-
-import type { CodegenConfig } from '@graphql-codegen/cli';
-import { schema } from './graphql.config.js';
+import type { CodegenConfig } from "@graphql-codegen/cli";
+import { schema } from "./graphql.config.js";
 
 const config: CodegenConfig = {
   overwrite: true,
@@ -8,12 +7,16 @@ const config: CodegenConfig = {
   documents: "src/**/*.{graphql,tsx, ts}",
   generates: {
     "src/graphql/__generated__/index.ts": {
-      plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo",
+      ],
       config: {
-        withHooks: true
-      }
-    }
-  } 
+        withHooks: true,
+      },
+    },
+  },
 };
 
 export default config;

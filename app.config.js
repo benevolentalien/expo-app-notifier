@@ -1,8 +1,10 @@
+const pkg = require("./package.json")
+
 export default () => ({
   expo: {
     name: "notificator",
     slug: "notificator",
-    version: "1.0.7",
+    version: pkg.version,
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -38,7 +40,7 @@ export default () => ({
       },
       package: "dev.monx.notifier",
       googleServicesFile: "./google-services.json",
-      versionCode: 15,
+      versionCode: 16,
     },
     web: {
       favicon: "./assets/favicon.png",

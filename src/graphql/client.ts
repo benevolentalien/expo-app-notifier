@@ -1,4 +1,9 @@
-import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  from,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import auth from "@react-native-firebase/auth";
 import Env from "@env";
