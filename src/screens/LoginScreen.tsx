@@ -1,5 +1,5 @@
 import { onGoogleButtonPress } from '@/utils/GoogleSignIn'
-import Env from '../../Env'
+import Env from "@env";
 import React, { useState } from 'react'
 import { Button, View, Text } from 'react-native'
 

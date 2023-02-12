@@ -1,10 +1,10 @@
 import { rollbar } from "@/rollbar";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import Config from "../../Env";
+import Env from "@env";
 
 GoogleSignin.configure({
-  webClientId: Config.webClientId
+  webClientId: Env.webClientId,
 });
 
 export async function onGoogleButtonPress() {

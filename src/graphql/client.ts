@@ -1,7 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import auth from "@react-native-firebase/auth";
-import Env from "../../Env";
+import Env from "@env";
 import { onError } from "@apollo/client/link/error";
 import { rollbar } from "@/rollbar";
 
