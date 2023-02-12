@@ -1,7 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import auth from "@react-native-firebase/auth";
-import Config from "../../config";
+import Env from "../../Env";
 import { onError } from "@apollo/client/link/error";
 import { rollbar } from "@/rollbar";
 
@@ -16,7 +16,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: Config.apiUrl,
+  uri: Env.apiUrl,
 });
 
 const authLink = setContext(async (_, { headers }) => {

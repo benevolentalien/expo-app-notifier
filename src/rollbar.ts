@@ -1,5 +1,5 @@
 import Rollbar from "rollbar";
-import config from "../config";
+import config from "../Env";
 
 export const rollbar = Rollbar.init({
   accessToken: config.rollbar,

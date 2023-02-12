@@ -4,15 +4,29 @@
   },
   "build": {
     "development": {
+      "channel": "development",
       "developmentClient": true,
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "ENV": "development"
       }
     },
     "staging": {
+      "channel": "staging",
+      "env": {
+        "ENV": "staging",
+        "API_URL": "https://cool-field-4473.fly.dev/graphql"
+      }
     },
     "production": {
+      "channel": "production",
+      "env": {
+        "ENV": "production",
+        "API_URL": "https://cool-field-4473.fly.dev/graphql"
+      }
     }
   }
 }

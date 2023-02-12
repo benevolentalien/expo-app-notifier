@@ -1,4 +1,5 @@
 import { onGoogleButtonPress } from '@/utils/GoogleSignIn'
+import Env from '../../Env'
 import React, { useState } from 'react'
 import { Button, View, Text } from 'react-native'
 
@@ -13,6 +14,7 @@ export default function LoginScreen() {
 
   return (
     <View>
+      <Text>{Env.apiUrl}</Text>
       <Text>{JSON.stringify(error)}</Text>
       <Button title="Login" onPress={handleLogin} disabled={loading} />
     </View>

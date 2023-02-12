@@ -93,6 +93,7 @@ export default function RergisterScreen({
           })
         }
         title="Register"
+        disabled={!Boolean(username)}
       />
     </View>
   );

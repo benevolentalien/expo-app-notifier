@@ -1,7 +1,7 @@
 import { rollbar } from "@/rollbar";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import Config from "../../config";
+import Config from "../../Env";
 
 GoogleSignin.configure({
   webClientId: Config.webClientId
