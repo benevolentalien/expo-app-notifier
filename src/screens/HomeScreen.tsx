@@ -1,17 +1,44 @@
 import Test from "@/a/Test";
-import { useMeQuery } from "@/graphql/__generated__";
+import { useUserStore } from "@/contexts/user";
+import { useMeQuery, useUpdateTokenMutation } from "@/graphql/__generated__";
+import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
 import { onLogout } from "@/utils/GoogleSignIn";
+import { gql } from "@apollo/client";
 import React from "react";
 import { Button, View, Text } from "react-native";
 
+gql`
+  mutation UpdateToken($token: String) {
+    updateToken(token: $token) {
+      token
+    }
+  }
+`;
+
 export default function HomeScreen({ navigation }: ScreenProps<"Home">) {
-  const { data } = useMeQuery();
+  const { token, setToken } = useUserStore((state) => state);
+
+  const { data } = useMeQuery({
+    onCompleted(data) {
+      if (data.me?.token && data.me.token === token) return;
+      updateToken({ variables: { token } });
+    },
+  });
+
+  const [updateToken] = useUpdateTokenMutation({
+    onCompleted(data) {
+      rollbar.info("token updated");
+      setToken(data.updateToken?.token ?? undefined);
+    },
+  });
 
   return (
     <View>
       <Test />
-      <Text>{data?.me?.username} ({data?.me?.followersCount} followers)</Text>
+      <Text>
+        {data?.me?.username} ({data?.me?.followersCount} followers)
+      </Text>
       <Button title="search" onPress={() => navigation.navigate("Follow")} />
       <Button title="Logout" onPress={onLogout} />
     </View>

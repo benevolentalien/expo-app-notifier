@@ -35,44 +35,21 @@ gql`
   }
 `;
 
-gql`
-  mutation UpdateToken($token: String) {
-    updateToken(token: $token) {
-      token
-    }
-  }
-`;
-
 export default function RergisterScreen({
   navigation,
 }: ScreenProps<"Register">) {
-  const { token, setToken } = useUserStore((state) => state);
+  const token = useUserStore((state) => state.token);
 
   const me = useMeQuery({
     onCompleted(data) {
-      if (!data.me) {
-        return;
-      }
-      if (!data.me.token || data.me.token !== token) {
-        rollbar.info("token updated");
-        if (!token) rollbar.warn("nao tem token");
+      if (!data.me?.username) return;
 
-        updateToken({ variables: { token } });
-      } else {
-        navigation.reset({
-          routes: [{ name: "Home" }],
-          index: 0,
-        });
-      }
+      navigation.reset({
+        routes: [{ name: "Home" }],
+        index: 0,
+      });
     },
     fetchPolicy: "no-cache",
-  });
-
-  const [updateToken, updateData] = useUpdateTokenMutation({
-    onCompleted(data) {
-      setToken(data.updateToken?.token ?? undefined);
-      me.refetch();
-    },
   });
 
   const [register, registerData] = useRegisterMutation({
@@ -83,8 +60,7 @@ export default function RergisterScreen({
 
   const [username, setUsername] = useState("");
 
-  if (me.loading || updateData.loading || registerData.loading)
-    return <ActivityIndicator />;
+  if (me.loading) return <ActivityIndicator />;
 
   return (
     <View>
@@ -96,7 +72,7 @@ export default function RergisterScreen({
           })
         }
         title="Register"
-        disabled={!Boolean(username)}
+        disabled={!Boolean(username) || registerData.loading}
       />
     </View>
   );
