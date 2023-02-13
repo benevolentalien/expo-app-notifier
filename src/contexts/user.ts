@@ -1,4 +1,3 @@
-import { MeQuery } from "@/graphql/__generated__";
 import { create } from "zustand";
 
 interface UserState {

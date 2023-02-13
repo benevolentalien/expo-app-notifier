@@ -5,48 +5,8 @@ import {
   useSearchLazyQuery,
   useUnfollowMutation,
 } from "@/graphql/__generated__";
-import { gql } from "@apollo/client";
 import React, { useCallback, useState } from "react";
 import { Button, StyleSheet, TextInput, View, Text } from "react-native";
-
-gql`
-  mutation follow($id: BigInteger!) {
-    follow(id: $id) {
-      following {
-        id
-      }
-    }
-  }
-`;
-
-gql`
-  mutation unfollow($id: BigInteger!) {
-    unfollow(id: $id) {
-      following {
-        id
-      }
-    }
-  }
-`;
-
-gql`
-  query search($username: String!) {
-    search(username: $username) {
-      id
-      username
-    }
-  }
-`;
-
-gql`
-  query meFollow {
-    me {
-      followers {
-        id
-      }
-    }
-  }
-`
 
 export default function FollowScreen() {
   const [username, setUsername] = useState("");

@@ -6,28 +6,8 @@ import {
 } from "@/graphql/__generated__";
 import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
-import { gql } from "@apollo/client";
 import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Button, TextInput, View } from "react-native";
-
-gql`
-  mutation Register($newUser: NewUserInput!) {
-    register(newUser: $newUser) {
-      id
-      uid
-      username
-      token
-    }
-  }
-`;
-
-gql`
-  query MeRegister {
-    me {
-      username
-    }
-  }
-`;
 
 export default function RergisterScreen({
   navigation,

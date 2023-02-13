@@ -3,16 +3,6 @@ import { gql } from "@apollo/client";
 import React, { useCallback, useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 
-gql`
-  mutation sendNotification($message: NotificationInput!) {
-    sendNotification(message: $message) {
-      id
-      message
-      status
-    }
-  }
-`;
-
 export default function Test() {
   const [message, setMessage] = useState("");
 

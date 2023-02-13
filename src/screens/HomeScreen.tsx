@@ -8,47 +8,29 @@ import {
 import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
 import { onLogout } from "@/utils/GoogleSignIn";
-import { gql } from "@apollo/client";
 import React, { useEffect } from "react";
 import { Button, View, Text } from "react-native";
-
-gql`
-  mutation UpdateToken($token: String) {
-    updateToken(token: $token) {
-      token
-    }
-  }
-`;
-
-gql`
-  query MeHome {
-    me {
-      token
-      username
-      followersCount
-    }
-  }
-`;
 
 export default function HomeScreen({ navigation }: ScreenProps<"Home">) {
   const { token, setToken } = useUserStore((state) => state);
 
   const { data } = useMeHomeQuery({ nextFetchPolicy: "no-cache" });
 
-  useEffect(() => {
-    rollbar.info(data);
-    if (!data?.me?.token || data.me.token !== token) {
-      updateToken({ variables: { token } });
-    }
-  }, [token, data]);
-
-  const [updateToken] = useUpdateTokenMutation({
+  const [updateToken, { loading }] = useUpdateTokenMutation({
     onCompleted(data) {
       rollbar.info(data);
       setToken(data.updateToken?.token ?? undefined);
     },
     refetchQueries: [MeHomeDocument],
   });
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!data?.me?.token || data.me.token !== token) {
+      updateToken({ variables: { token } });
+    }
+  }, [token, data, loading]);
 
   return (
     <View>

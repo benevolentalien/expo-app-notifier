@@ -1,0 +1,67 @@
+mutation UpdateToken($token: String) {
+  updateToken(token: $token) {
+    token
+  }
+}
+
+query MeHome {
+  me {
+    token
+    username
+    followersCount
+  }
+}
+
+mutation Register($newUser: NewUserInput!) {
+  register(newUser: $newUser) {
+    id
+    uid
+    username
+    token
+  }
+}
+
+query MeRegister {
+  me {
+    username
+  }
+}
+
+mutation sendNotification($message: NotificationInput!) {
+  sendNotification(message: $message) {
+    id
+    message
+    status
+  }
+}
+
+mutation follow($id: BigInteger!) {
+  follow(id: $id) {
+    following {
+      id
+    }
+  }
+}
+
+mutation unfollow($id: BigInteger!) {
+  unfollow(id: $id) {
+    following {
+      id
+    }
+  }
+}
+
+query search($username: String!) {
+  search(username: $username) {
+    id
+    username
+  }
+}
+
+query meFollow {
+  me {
+    followers {
+      id
+    }
+  }
+}
