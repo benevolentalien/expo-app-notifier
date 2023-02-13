@@ -1,9 +1,8 @@
 import {
+  MeDocument,
   useFollowMutation,
   useMeQuery,
   useSearchLazyQuery,
-  useSearchQuery,
-  useSendNotificationMutation,
   useUnfollowMutation,
 } from "@/graphql/__generated__";
 import { gql } from "@apollo/client";
@@ -43,18 +42,16 @@ export default function FollowScreen() {
   const [username, setUsername] = useState("");
 
   const [follow] = useFollowMutation({
-    onCompleted() {
-      me.refetch();
-    },
+    refetchQueries: [MeDocument],
   });
 
   const [unfollow] = useUnfollowMutation({
-    onCompleted() {
-      me.refetch();
-    },
+    refetchQueries: [MeDocument],
   });
 
-  const [search, result] = useSearchLazyQuery({ variables: { username: username || "why is this being called on mount?!" } });
+  const [search, result] = useSearchLazyQuery({
+    variables: { username: username || "why is this being called on mount?!" },
+  });
 
   const me = useMeQuery();
 
@@ -65,10 +62,7 @@ export default function FollowScreen() {
         onChangeText={setUsername}
         value={username}
       />
-      <Button
-        title="search"
-        onPress={search as any}
-      />
+      <Button title="search" onPress={search as any} />
       {result.data?.search?.map((user) => (
         <View key={user?.id}>
           <Text>{user?.username}</Text>

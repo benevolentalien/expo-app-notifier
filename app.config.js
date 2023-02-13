@@ -40,7 +40,7 @@ export default () => ({
       },
       package: "dev.monx.notifier",
       googleServicesFile: "./google-services.json",
-      versionCode: 20,
+      versionCode: 21,
     },
     web: {
       favicon: "./assets/favicon.png",

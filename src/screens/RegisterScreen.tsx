@@ -1,8 +1,8 @@
 import { useUserStore } from "@/contexts/user";
 import {
+  MeDocument,
   useMeQuery,
   useRegisterMutation,
-  useUpdateTokenMutation,
 } from "@/graphql/__generated__";
 import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
@@ -49,13 +49,10 @@ export default function RergisterScreen({
         index: 0,
       });
     },
-    fetchPolicy: "no-cache",
   });
 
   const [register, registerData] = useRegisterMutation({
-    onCompleted() {
-      me.refetch();
-    },
+    refetchQueries: [MeDocument],
   });
 
   const [username, setUsername] = useState("");
