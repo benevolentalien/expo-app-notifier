@@ -10,7 +10,6 @@ import {
 } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
-import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 
 type RootStackParamList = {
   Home: undefined;
@@ -53,7 +52,13 @@ export default function MyStack() {
           <Stack.Screen name="Follow" component={FollowScreen} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            header: () => null,
+          }}
+        />
       )}
     </Stack.Navigator>
   );

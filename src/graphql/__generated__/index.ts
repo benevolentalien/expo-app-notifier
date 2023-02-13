@@ -137,7 +137,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register?: { __typenam
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id?: any | null, username?: string | null, token?: string | null, followers?: Array<{ __typename?: 'User', id?: any | null } | null> | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id?: any | null, username?: string | null, token?: string | null, followersCount: number, followers?: Array<{ __typename?: 'User', id?: any | null } | null> | null } | null };
 
 export type UpdateTokenMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -330,6 +330,7 @@ export const MeDocument = gql`
     id
     username
     token
+    followersCount
     followers {
       id
     }

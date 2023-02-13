@@ -19,7 +19,7 @@ gql`
 export default function Test() {
   const [message, setMessage] = useState("");
 
-  const [sendNotification] = useSendNotificationMutation({
+  const [sendNotification, {loading}] = useSendNotificationMutation({
     variables: {
       message: {
         body: message,
@@ -37,7 +37,7 @@ export default function Test() {
         onChangeText={setMessage}
         value={message}
       />
-      <Button title="send" onPress={sendNotification as any} disabled={!Boolean(message)} />
+      <Button title="send" onPress={sendNotification as any} disabled={!Boolean(message) || loading} />
     </View>
   );
 }

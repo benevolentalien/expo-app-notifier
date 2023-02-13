@@ -4,10 +4,11 @@ import {
   useRegisterMutation,
   useUpdateTokenMutation,
 } from "@/graphql/__generated__";
+import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
 import { gql } from "@apollo/client";
 import React, { useState } from "react";
-import { ActivityIndicator, Button, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Button, TextInput, View } from "react-native";
 
 gql`
   mutation Register($newUser: NewUserInput!) {
@@ -26,6 +27,7 @@ gql`
       id
       username
       token
+      followersCount
       followers {
         id
       }
@@ -44,29 +46,30 @@ gql`
 export default function RergisterScreen({
   navigation,
 }: ScreenProps<"Register">) {
-  const { token, setToken, setId } = useUserStore((state) => state);
+  const { token, setToken } = useUserStore((state) => state);
 
   const me = useMeQuery({
     onCompleted(data) {
       if (!data.me) {
         return;
       }
-      if (data.me.token != token) {
-        updateToken({ variables: { token } });
-      } else if (data.me.username) {
-        setId(data.me.id);
+      if (!data.me.token || data.me.token !== token) {
+        rollbar.info("token updated");
+        if (!token) rollbar.warn("nao tem token");
 
+        updateToken({ variables: { token } });
+      } else {
         navigation.reset({
           routes: [{ name: "Home" }],
           index: 0,
         });
       }
     },
+    fetchPolicy: "no-cache",
   });
 
   const [updateToken, updateData] = useUpdateTokenMutation({
-    onCompleted(data, clientOptions) {
-      console.log("token updated");
+    onCompleted(data) {
       setToken(data.updateToken?.token ?? undefined);
       me.refetch();
     },
