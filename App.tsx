@@ -33,12 +33,12 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
       setLoggedIn(Boolean(user));
-
-      registerForPushNotificationsAsync("@benevolentalien/notificator")
-        .then(setToken)
-        .then(SplashScreen.hideAsync)
-        .catch(rollbar.error);
     });
+
+    registerForPushNotificationsAsync("@benevolentalien/notificator")
+      .then(setToken)
+      .then(SplashScreen.hideAsync)
+      .catch(rollbar.error);
 
     return () => {
       unsubscribe();
