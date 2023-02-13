@@ -1,7 +1,7 @@
 import { useUserStore } from "@/contexts/user";
 import {
-  MeDocument,
-  useMeQuery,
+  MeRegisterDocument,
+  useMeRegisterQuery,
   useRegisterMutation,
 } from "@/graphql/__generated__";
 import { rollbar } from "@/rollbar";
@@ -22,15 +22,9 @@ gql`
 `;
 
 gql`
-  query Me {
+  query MeRegister {
     me {
-      id
       username
-      token
-      followersCount
-      followers {
-        id
-      }
     }
   }
 `;
@@ -40,7 +34,7 @@ export default function RergisterScreen({
 }: ScreenProps<"Register">) {
   const token = useUserStore((state) => state.token);
 
-  const me = useMeQuery({
+  const me = useMeRegisterQuery({
     onCompleted(data) {
       rollbar.info(data);
       if (data.me?.username) {
@@ -54,7 +48,7 @@ export default function RergisterScreen({
   });
 
   const [register, registerData] = useRegisterMutation({
-    refetchQueries: [MeDocument],
+    refetchQueries: [MeRegisterDocument],
   });
 
   const [username, setUsername] = useState("");

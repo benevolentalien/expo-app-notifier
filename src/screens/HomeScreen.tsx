@@ -1,6 +1,10 @@
 import Test from "@/a/Test";
 import { useUserStore } from "@/contexts/user";
-import { useMeQuery, useUpdateTokenMutation } from "@/graphql/__generated__";
+import {
+  MeHomeDocument,
+  useMeHomeQuery,
+  useUpdateTokenMutation,
+} from "@/graphql/__generated__";
 import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
 import { onLogout } from "@/utils/GoogleSignIn";
@@ -16,12 +20,23 @@ gql`
   }
 `;
 
+gql`
+  query MeHome {
+    me {
+      token
+      username
+      followersCount
+    }
+  }
+`;
+
 export default function HomeScreen({ navigation }: ScreenProps<"Home">) {
   const { token, setToken } = useUserStore((state) => state);
 
-  const { data } = useMeQuery();
+  const { data } = useMeHomeQuery({ nextFetchPolicy: "no-cache" });
 
   useEffect(() => {
+    rollbar.info(data);
     if (!data?.me?.token || data.me.token !== token) {
       updateToken({ variables: { token } });
     }
@@ -29,9 +44,10 @@ export default function HomeScreen({ navigation }: ScreenProps<"Home">) {
 
   const [updateToken] = useUpdateTokenMutation({
     onCompleted(data) {
-      rollbar.info("token updated", data);
+      rollbar.info(data);
       setToken(data.updateToken?.token ?? undefined);
     },
+    refetchQueries: [MeHomeDocument],
   });
 
   return (

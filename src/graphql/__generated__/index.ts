@@ -127,17 +127,10 @@ export type SearchQueryVariables = Exact<{
 
 export type SearchQuery = { __typename?: 'Query', search?: Array<{ __typename?: 'User', id?: any | null, username?: string | null } | null> | null };
 
-export type RegisterMutationVariables = Exact<{
-  newUser: NewUserInput;
-}>;
+export type MeFollowQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', id?: any | null, uid?: string | null, username?: string | null, token?: string | null } | null };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id?: any | null, username?: string | null, token?: string | null, followersCount: number, followers?: Array<{ __typename?: 'User', id?: any | null } | null> | null } | null };
+export type MeFollowQuery = { __typename?: 'Query', me?: { __typename?: 'User', followers?: Array<{ __typename?: 'User', id?: any | null } | null> | null } | null };
 
 export type UpdateTokenMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -145,6 +138,23 @@ export type UpdateTokenMutationVariables = Exact<{
 
 
 export type UpdateTokenMutation = { __typename?: 'Mutation', updateToken?: { __typename?: 'User', token?: string | null } | null };
+
+export type MeHomeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeHomeQuery = { __typename?: 'Query', me?: { __typename?: 'User', token?: string | null, username?: string | null, followersCount: number } | null };
+
+export type RegisterMutationVariables = Exact<{
+  newUser: NewUserInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', id?: any | null, uid?: string | null, username?: string | null, token?: string | null } | null };
+
+export type MeRegisterQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeRegisterQuery = { __typename?: 'Query', me?: { __typename?: 'User', username?: string | null } | null };
 
 
 export const SendNotificationDocument = gql`
@@ -288,6 +298,111 @@ export function useSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Sea
 export type SearchQueryHookResult = ReturnType<typeof useSearchQuery>;
 export type SearchLazyQueryHookResult = ReturnType<typeof useSearchLazyQuery>;
 export type SearchQueryResult = Apollo.QueryResult<SearchQuery, SearchQueryVariables>;
+export const MeFollowDocument = gql`
+    query meFollow {
+  me {
+    followers {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useMeFollowQuery__
+ *
+ * To run a query within a React component, call `useMeFollowQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeFollowQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeFollowQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeFollowQuery(baseOptions?: Apollo.QueryHookOptions<MeFollowQuery, MeFollowQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeFollowQuery, MeFollowQueryVariables>(MeFollowDocument, options);
+      }
+export function useMeFollowLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeFollowQuery, MeFollowQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeFollowQuery, MeFollowQueryVariables>(MeFollowDocument, options);
+        }
+export type MeFollowQueryHookResult = ReturnType<typeof useMeFollowQuery>;
+export type MeFollowLazyQueryHookResult = ReturnType<typeof useMeFollowLazyQuery>;
+export type MeFollowQueryResult = Apollo.QueryResult<MeFollowQuery, MeFollowQueryVariables>;
+export const UpdateTokenDocument = gql`
+    mutation UpdateToken($token: String) {
+  updateToken(token: $token) {
+    token
+  }
+}
+    `;
+export type UpdateTokenMutationFn = Apollo.MutationFunction<UpdateTokenMutation, UpdateTokenMutationVariables>;
+
+/**
+ * __useUpdateTokenMutation__
+ *
+ * To run a mutation, you first call `useUpdateTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTokenMutation, { data, loading, error }] = useUpdateTokenMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useUpdateTokenMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTokenMutation, UpdateTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTokenMutation, UpdateTokenMutationVariables>(UpdateTokenDocument, options);
+      }
+export type UpdateTokenMutationHookResult = ReturnType<typeof useUpdateTokenMutation>;
+export type UpdateTokenMutationResult = Apollo.MutationResult<UpdateTokenMutation>;
+export type UpdateTokenMutationOptions = Apollo.BaseMutationOptions<UpdateTokenMutation, UpdateTokenMutationVariables>;
+export const MeHomeDocument = gql`
+    query MeHome {
+  me {
+    token
+    username
+    followersCount
+  }
+}
+    `;
+
+/**
+ * __useMeHomeQuery__
+ *
+ * To run a query within a React component, call `useMeHomeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeHomeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeHomeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeHomeQuery(baseOptions?: Apollo.QueryHookOptions<MeHomeQuery, MeHomeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeHomeQuery, MeHomeQueryVariables>(MeHomeDocument, options);
+      }
+export function useMeHomeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeHomeQuery, MeHomeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeHomeQuery, MeHomeQueryVariables>(MeHomeDocument, options);
+        }
+export type MeHomeQueryHookResult = ReturnType<typeof useMeHomeQuery>;
+export type MeHomeLazyQueryHookResult = ReturnType<typeof useMeHomeLazyQuery>;
+export type MeHomeQueryResult = Apollo.QueryResult<MeHomeQuery, MeHomeQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($newUser: NewUserInput!) {
   register(newUser: $newUser) {
@@ -324,76 +439,37 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
-export const MeDocument = gql`
-    query Me {
+export const MeRegisterDocument = gql`
+    query MeRegister {
   me {
-    id
     username
-    token
-    followersCount
-    followers {
-      id
-    }
   }
 }
     `;
 
 /**
- * __useMeQuery__
+ * __useMeRegisterQuery__
  *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMeRegisterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeRegisterQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMeQuery({
+ * const { data, loading, error } = useMeRegisterQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+export function useMeRegisterQuery(baseOptions?: Apollo.QueryHookOptions<MeRegisterQuery, MeRegisterQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+        return Apollo.useQuery<MeRegisterQuery, MeRegisterQueryVariables>(MeRegisterDocument, options);
       }
-export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+export function useMeRegisterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeRegisterQuery, MeRegisterQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+          return Apollo.useLazyQuery<MeRegisterQuery, MeRegisterQueryVariables>(MeRegisterDocument, options);
         }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const UpdateTokenDocument = gql`
-    mutation UpdateToken($token: String) {
-  updateToken(token: $token) {
-    token
-  }
-}
-    `;
-export type UpdateTokenMutationFn = Apollo.MutationFunction<UpdateTokenMutation, UpdateTokenMutationVariables>;
-
-/**
- * __useUpdateTokenMutation__
- *
- * To run a mutation, you first call `useUpdateTokenMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTokenMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateTokenMutation, { data, loading, error }] = useUpdateTokenMutation({
- *   variables: {
- *      token: // value for 'token'
- *   },
- * });
- */
-export function useUpdateTokenMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTokenMutation, UpdateTokenMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateTokenMutation, UpdateTokenMutationVariables>(UpdateTokenDocument, options);
-      }
-export type UpdateTokenMutationHookResult = ReturnType<typeof useUpdateTokenMutation>;
-export type UpdateTokenMutationResult = Apollo.MutationResult<UpdateTokenMutation>;
-export type UpdateTokenMutationOptions = Apollo.BaseMutationOptions<UpdateTokenMutation, UpdateTokenMutationVariables>;
+export type MeRegisterQueryHookResult = ReturnType<typeof useMeRegisterQuery>;
+export type MeRegisterLazyQueryHookResult = ReturnType<typeof useMeRegisterLazyQuery>;
+export type MeRegisterQueryResult = Apollo.QueryResult<MeRegisterQuery, MeRegisterQueryVariables>;

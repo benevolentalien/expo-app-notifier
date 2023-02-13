@@ -1,7 +1,7 @@
 import {
-  MeDocument,
+  MeFollowDocument,
   useFollowMutation,
-  useMeQuery,
+  useMeFollowQuery,
   useSearchLazyQuery,
   useUnfollowMutation,
 } from "@/graphql/__generated__";
@@ -38,15 +38,25 @@ gql`
   }
 `;
 
+gql`
+  query meFollow {
+    me {
+      followers {
+        id
+      }
+    }
+  }
+`
+
 export default function FollowScreen() {
   const [username, setUsername] = useState("");
 
   const [follow] = useFollowMutation({
-    refetchQueries: [MeDocument],
+    refetchQueries: [MeFollowDocument],
   });
 
   const [unfollow] = useUnfollowMutation({
-    refetchQueries: [MeDocument],
+    refetchQueries: [MeFollowDocument],
   });
 
   const [search, result] = useSearchLazyQuery();
@@ -59,8 +69,8 @@ export default function FollowScreen() {
     });
   }, [username]);
 
-  const me = useMeQuery();
-
+  
+  const me = useMeFollowQuery();
   return (
     <View>
       <TextInput
