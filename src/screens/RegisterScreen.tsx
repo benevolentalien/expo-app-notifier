@@ -7,7 +7,7 @@ import {
 import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
 import { gql } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Button, TextInput, View } from "react-native";
 
 gql`
@@ -42,13 +42,15 @@ export default function RergisterScreen({
 
   const me = useMeQuery({
     onCompleted(data) {
-      if (!data.me?.username) return;
-
-      navigation.reset({
-        routes: [{ name: "Home" }],
-        index: 0,
-      });
+      rollbar.info(data);
+      if (data.me?.username) {
+        navigation.reset({
+          routes: [{ name: "Home" }],
+          index: 0,
+        });
+      }
     },
+    nextFetchPolicy: "no-cache",
   });
 
   const [register, registerData] = useRegisterMutation({
@@ -57,17 +59,23 @@ export default function RergisterScreen({
 
   const [username, setUsername] = useState("");
 
+  const handleRegister = useCallback(() => {
+    register({
+      variables: { newUser: { token, username } },
+    });
+  }, [token, username]);
+
   if (me.loading) return <ActivityIndicator />;
 
   return (
     <View>
-      <TextInput placeholder="Username" onChangeText={setUsername} />
+      <TextInput
+        placeholder="Username"
+        onChangeText={setUsername}
+        value={username}
+      />
       <Button
-        onPress={() =>
-          register({
-            variables: { newUser: { token, username } },
-          })
-        }
+        onPress={handleRegister}
         title="Register"
         disabled={!Boolean(username) || registerData.loading}
       />

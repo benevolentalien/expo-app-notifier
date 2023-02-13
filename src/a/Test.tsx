@@ -1,9 +1,6 @@
-import {
-  useSendNotificationMutation,
-} from "@/graphql/__generated__";
+import { useSendNotificationMutation } from "@/graphql/__generated__";
 import { gql } from "@apollo/client";
-import { rollbar } from "@/rollbar";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 
 gql`
@@ -19,16 +16,17 @@ gql`
 export default function Test() {
   const [message, setMessage] = useState("");
 
-  const [sendNotification, {loading}] = useSendNotificationMutation({
-    variables: {
-      message: {
-        body: message,
+  const [sendNotification, { loading }] = useSendNotificationMutation();
+
+  const handleSendNotification = useCallback(() => {
+    sendNotification({
+      variables: {
+        message: {
+          body: message,
+        },
       },
-    },
-    onCompleted() {
-      setMessage("");
-    },
-  });
+    }).then(() => setMessage(""));
+  }, [message]);
 
   return (
     <View>
@@ -37,7 +35,11 @@ export default function Test() {
         onChangeText={setMessage}
         value={message}
       />
-      <Button title="send" onPress={sendNotification as any} disabled={!Boolean(message) || loading} />
+      <Button
+        title="send"
+        onPress={handleSendNotification}
+        disabled={!Boolean(message) || loading}
+      />
     </View>
   );
 }

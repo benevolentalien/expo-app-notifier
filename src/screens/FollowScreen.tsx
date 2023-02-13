@@ -6,7 +6,7 @@ import {
   useUnfollowMutation,
 } from "@/graphql/__generated__";
 import { gql } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, StyleSheet, TextInput, View, Text } from "react-native";
 
 gql`
@@ -49,9 +49,15 @@ export default function FollowScreen() {
     refetchQueries: [MeDocument],
   });
 
-  const [search, result] = useSearchLazyQuery({
-    variables: { username: username || "why is this being called on mount?!" },
-  });
+  const [search, result] = useSearchLazyQuery();
+
+  const handleSearch = useCallback(() => {
+    search({
+      variables: {
+        username: username || "why is this being called on mount?!",
+      },
+    });
+  }, [username]);
 
   const me = useMeQuery();
 
@@ -62,7 +68,12 @@ export default function FollowScreen() {
         onChangeText={setUsername}
         value={username}
       />
-      <Button title="search" onPress={search as any} />
+      <Button
+        title="search"
+        onPress={handleSearch}
+        disabled={result.loading || !username}
+      />
+
       {result.data?.search?.map((user) => (
         <View key={user?.id}>
           <Text>{user?.username}</Text>

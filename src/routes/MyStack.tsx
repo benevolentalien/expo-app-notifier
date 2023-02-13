@@ -8,8 +8,6 @@ import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
 
 type RootStackParamList = {
   Home: undefined;
@@ -23,42 +21,21 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export type ScreenProps<T extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, T>;
 
-export default function MyStack() {
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const token = useUserStore((state) => state.token);
+interface MyStackProps {
+  loggedIn: boolean;
+}
 
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(setUser);
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  if (!token) return <ActivityIndicator />;
-
+export default function MyStack({ loggedIn }: MyStackProps) {
   return (
-    <Stack.Navigator>
-      {user ? (
+    <Stack.Navigator initialRouteName={loggedIn ? "Register" : "Login"}>
+      {loggedIn ? (
         <>
-          <Stack.Group
-            screenOptions={{
-              header: () => null,
-            }}
-          >
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-          </Stack.Group>
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Follow" component={FollowScreen} />
         </>
       ) : (
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            header: () => null,
-          }}
-        />
+        <Stack.Screen name="Login" component={LoginScreen} />
       )}
     </Stack.Navigator>
   );
