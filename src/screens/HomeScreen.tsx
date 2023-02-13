@@ -5,7 +5,7 @@ import { rollbar } from "@/rollbar";
 import { ScreenProps } from "@/routes/MyStack";
 import { onLogout } from "@/utils/GoogleSignIn";
 import { gql } from "@apollo/client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, View, Text } from "react-native";
 
 gql`
@@ -19,16 +19,17 @@ gql`
 export default function HomeScreen({ navigation }: ScreenProps<"Home">) {
   const { token, setToken } = useUserStore((state) => state);
 
-  const { data } = useMeQuery({
-    onCompleted(data) {
-      if (data.me?.token && data.me.token === token) return;
+  const { data } = useMeQuery();
+
+  useEffect(() => {
+    if (!data?.me?.token || data.me.token !== token) {
       updateToken({ variables: { token } });
-    },
-  });
+    }
+  }, [token, data]);
 
   const [updateToken] = useUpdateTokenMutation({
     onCompleted(data) {
-      rollbar.info("token updated");
+      rollbar.info("token updated", data);
       setToken(data.updateToken?.token ?? undefined);
     },
   });

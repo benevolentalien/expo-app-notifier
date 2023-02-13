@@ -10,8 +10,8 @@ export default function LoginScreen() {
   const handleLogin = useCallback(() => {
     setLoading(true);
     onGoogleButtonPress()
-      .catch(setError)
-      .finally(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(setError);
   }, []);
 
   return (
