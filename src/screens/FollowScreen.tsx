@@ -54,7 +54,7 @@ export default function FollowScreen() {
     },
   });
 
-  const [search, result] = useSearchLazyQuery();
+  const [search, result] = useSearchLazyQuery({ variables: { username: username || "why is this being called on mount?!" } });
 
   const me = useMeQuery();
 
@@ -67,7 +67,7 @@ export default function FollowScreen() {
       />
       <Button
         title="search"
-        onPress={() => search({ variables: { username } })}
+        onPress={search as any}
       />
       {result.data?.search?.map((user) => (
         <View key={user?.id}>
