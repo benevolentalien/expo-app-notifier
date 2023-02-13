@@ -99,13 +99,6 @@ export type User = {
   username?: Maybe<Scalars['String']>;
 };
 
-export type SendNotificationMutationVariables = Exact<{
-  message: NotificationInput;
-}>;
-
-
-export type SendNotificationMutation = { __typename?: 'Mutation', sendNotification?: Array<{ __typename?: 'NotificationResponse', id?: string | null, message?: string | null, status?: string | null } | null> | null };
-
 export type UpdateTokenMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
 }>;
@@ -129,6 +122,13 @@ export type MeRegisterQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeRegisterQuery = { __typename?: 'Query', me?: { __typename?: 'User', username?: string | null } | null };
+
+export type SendNotificationMutationVariables = Exact<{
+  message: NotificationInput;
+}>;
+
+
+export type SendNotificationMutation = { __typename?: 'Mutation', sendNotification?: Array<{ __typename?: 'NotificationResponse', id?: string | null, message?: string | null, status?: string | null } | null> | null };
 
 export type FollowMutationVariables = Exact<{
   id: Scalars['BigInteger'];
@@ -157,41 +157,6 @@ export type MeFollowQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeFollowQuery = { __typename?: 'Query', me?: { __typename?: 'User', followers?: Array<{ __typename?: 'User', id?: any | null } | null> | null } | null };
 
 
-export const SendNotificationDocument = gql`
-    mutation sendNotification($message: NotificationInput!) {
-  sendNotification(message: $message) {
-    id
-    message
-    status
-  }
-}
-    `;
-export type SendNotificationMutationFn = Apollo.MutationFunction<SendNotificationMutation, SendNotificationMutationVariables>;
-
-/**
- * __useSendNotificationMutation__
- *
- * To run a mutation, you first call `useSendNotificationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSendNotificationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [sendNotificationMutation, { data, loading, error }] = useSendNotificationMutation({
- *   variables: {
- *      message: // value for 'message'
- *   },
- * });
- */
-export function useSendNotificationMutation(baseOptions?: Apollo.MutationHookOptions<SendNotificationMutation, SendNotificationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SendNotificationMutation, SendNotificationMutationVariables>(SendNotificationDocument, options);
-      }
-export type SendNotificationMutationHookResult = ReturnType<typeof useSendNotificationMutation>;
-export type SendNotificationMutationResult = Apollo.MutationResult<SendNotificationMutation>;
-export type SendNotificationMutationOptions = Apollo.BaseMutationOptions<SendNotificationMutation, SendNotificationMutationVariables>;
 export const UpdateTokenDocument = gql`
     mutation UpdateToken($token: String) {
   updateToken(token: $token) {
@@ -331,6 +296,41 @@ export function useMeRegisterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type MeRegisterQueryHookResult = ReturnType<typeof useMeRegisterQuery>;
 export type MeRegisterLazyQueryHookResult = ReturnType<typeof useMeRegisterLazyQuery>;
 export type MeRegisterQueryResult = Apollo.QueryResult<MeRegisterQuery, MeRegisterQueryVariables>;
+export const SendNotificationDocument = gql`
+    mutation sendNotification($message: NotificationInput!) {
+  sendNotification(message: $message) {
+    id
+    message
+    status
+  }
+}
+    `;
+export type SendNotificationMutationFn = Apollo.MutationFunction<SendNotificationMutation, SendNotificationMutationVariables>;
+
+/**
+ * __useSendNotificationMutation__
+ *
+ * To run a mutation, you first call `useSendNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendNotificationMutation, { data, loading, error }] = useSendNotificationMutation({
+ *   variables: {
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useSendNotificationMutation(baseOptions?: Apollo.MutationHookOptions<SendNotificationMutation, SendNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendNotificationMutation, SendNotificationMutationVariables>(SendNotificationDocument, options);
+      }
+export type SendNotificationMutationHookResult = ReturnType<typeof useSendNotificationMutation>;
+export type SendNotificationMutationResult = Apollo.MutationResult<SendNotificationMutation>;
+export type SendNotificationMutationOptions = Apollo.BaseMutationOptions<SendNotificationMutation, SendNotificationMutationVariables>;
 export const FollowDocument = gql`
     mutation follow($id: BigInteger!) {
   follow(id: $id) {

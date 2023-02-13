@@ -1,5 +1,6 @@
 import {
   MeFollowDocument,
+  MeHomeDocument,
   useFollowMutation,
   useMeFollowQuery,
   useSearchLazyQuery,
@@ -12,11 +13,11 @@ export default function FollowScreen() {
   const [username, setUsername] = useState("");
 
   const [follow] = useFollowMutation({
-    refetchQueries: [MeFollowDocument],
+    refetchQueries: [MeFollowDocument, MeHomeDocument],
   });
 
   const [unfollow] = useUnfollowMutation({
-    refetchQueries: [MeFollowDocument],
+    refetchQueries: [MeFollowDocument, MeHomeDocument],
   });
 
   const [search, result] = useSearchLazyQuery();

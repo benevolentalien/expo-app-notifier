@@ -25,7 +25,7 @@ export default function HomeScreen({ navigation }: ScreenProps<"Home">) {
   });
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !token) return;
 
     if (!data?.me?.token || data.me.token !== token) {
       updateToken({ variables: { token } });
